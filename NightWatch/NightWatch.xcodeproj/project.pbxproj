@@ -11,6 +11,9 @@
 		F504BAAF2A613418005D0DD7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F504BAAE2A613418005D0DD7 /* ContentView.swift */; };
 		F504BAB12A61341A005D0DD7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F504BAB02A61341A005D0DD7 /* Assets.xcassets */; };
 		F504BAB42A61341A005D0DD7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F504BAB32A61341A005D0DD7 /* Preview Assets.xcassets */; };
+		F52BFB532A61D1A900693A62 /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52BFB522A61D1A900693A62 /* DetailsView.swift */; };
+		F52BFB552A61D6D100693A62 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52BFB542A61D6D100693A62 /* Task.swift */; };
+		F52BFB572A61F07E00693A62 /* NightWatchTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52BFB562A61F07E00693A62 /* NightWatchTasks.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +22,9 @@
 		F504BAAE2A613418005D0DD7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F504BAB02A61341A005D0DD7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F504BAB32A61341A005D0DD7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		F52BFB522A61D1A900693A62 /* DetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsView.swift; sourceTree = "<group>"; };
+		F52BFB542A61D6D100693A62 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		F52BFB562A61F07E00693A62 /* NightWatchTasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightWatchTasks.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,8 +59,11 @@
 			children = (
 				F504BAAC2A613418005D0DD7 /* NightWatchApp.swift */,
 				F504BAAE2A613418005D0DD7 /* ContentView.swift */,
+				F52BFB562A61F07E00693A62 /* NightWatchTasks.swift */,
 				F504BAB02A61341A005D0DD7 /* Assets.xcassets */,
 				F504BAB22A61341A005D0DD7 /* Preview Content */,
+				F52BFB522A61D1A900693A62 /* DetailsView.swift */,
+				F52BFB542A61D6D100693A62 /* Task.swift */,
 			);
 			path = NightWatch;
 			sourceTree = "<group>";
@@ -137,8 +146,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F52BFB552A61D6D100693A62 /* Task.swift in Sources */,
 				F504BAAF2A613418005D0DD7 /* ContentView.swift in Sources */,
 				F504BAAD2A613418005D0DD7 /* NightWatchApp.swift in Sources */,
+				F52BFB532A61D1A900693A62 /* DetailsView.swift in Sources */,
+				F52BFB572A61F07E00693A62 /* NightWatchTasks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

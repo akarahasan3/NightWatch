@@ -8,62 +8,144 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @ObservedObject var nightWatchTasks: NightWatchTasks
+    @State private var focusMode = false
+    @State private var resetAlertShowing = false
+    
     var body: some View {
-        HStack{
-            VStack(alignment: .leading){
-                //MARK: Nightly tasks
-                Group{
-                    HStack {
-                        Image(systemName: "moon.stars")
-                            .foregroundColor(Color.yellow)
-                            .font(/*@START_MENU_TOKEN@*/.title3/*@END_MENU_TOKEN@*/)
-                            .fontWeight(/*@START_MENU_TOKEN@*/.heavy/*@END_MENU_TOKEN@*/)
-                        Text("Nightly Tasks").font(/*@START_MENU_TOKEN@*/.title3/*@END_MENU_TOKEN@*/).fontWeight(.heavy).foregroundColor(/*@START_MENU_TOKEN@*/.yellow/*@END_MENU_TOKEN@*/).underline().textCase(/*@START_MENU_TOKEN@*/.uppercase/*@END_MENU_TOKEN@*/)
-                    }
-                    Text("- Check all windows")
-                    Text("- Check all doors")
-                    Text("- Check that the safe is locked")
-                    Text("- Check the mailbox")
-                    Text("- Inspect security cameras")
-                    Text("- Clear ice from sidewalks")
-                    Text("- Document \"strange and unusual\" occurances")
+        NavigationView {
+            List{
+                Section(header: TaskSectionHeader(symbolSystemName: "moon.stars", headerText: "Nightly tasks")){
+                    
+                    // Key-Pair values of tasks and their respective indexes
+                    let taskIndexPairs = Array(zip(nightWatchTasks.nightlyTasks, nightWatchTasks.nightlyTasks.indices))
+                    
+                    ForEach(taskIndexPairs, id:\.0.id, content: { //0 - zero is the first element of the tuple, aka the Task, therefore we can make the forEach identifiable by the Task Id
+                        task, taskIndex in
+                        
+                        let tasksWrapper = $nightWatchTasks
+                        let tasksBinding = tasksWrapper.nightlyTasks
+                        let theTask = tasksBinding[taskIndex]
+                        
+                        if !focusMode || (focusMode && !task.isComplete){
+                            NavigationLink(destination: DetailsView(task: theTask), label:{ TaskRow(task: task)
+                            })
+                        }
+                        
+                    }).onDelete(perform: { indexSet in
+                        nightWatchTasks.nightlyTasks.remove(atOffsets: indexSet)
+                    }).onMove(perform: { indices, newOffset in
+                        nightWatchTasks.nightlyTasks.move(fromOffsets: indices, toOffset: newOffset)
+                    })
                 }
-                //MARK: Weekly tasks
-                Group {
-                    Divider()
-                    HStack {
-                        Image(systemName: "sunset")
-                            .foregroundColor(Color.yellow)
-                            .font(/*@START_MENU_TOKEN@*/.title3/*@END_MENU_TOKEN@*/)
-                            .fontWeight(/*@START_MENU_TOKEN@*/.heavy/*@END_MENU_TOKEN@*/)
-                        Text("Weekly Tasks").font(/*@START_MENU_TOKEN@*/.title3/*@END_MENU_TOKEN@*/).fontWeight(.heavy).foregroundColor(/*@START_MENU_TOKEN@*/.yellow/*@END_MENU_TOKEN@*/).underline().padding(.top).textCase(/*@START_MENU_TOKEN@*/.uppercase/*@END_MENU_TOKEN@*/)
-                    }
-                    Text("- Check inside all vacant rooms")
-                    Text("- Walk the perimeter of the property")
+                
+                Section(header: TaskSectionHeader(symbolSystemName: "sunset", headerText: "Weekly tasks")){
+                    let taskIndexPairs = Array(zip(nightWatchTasks.weeklyTasks, nightWatchTasks.weeklyTasks.indices))
+                    ForEach(taskIndexPairs, id:\.0.id, content: {
+                        task, taskIndex in
+                        
+                        let tasksWrapper = $nightWatchTasks
+                        let tasksBinding = tasksWrapper.weeklyTasks
+                        let theTask = tasksBinding[taskIndex]
+                        if !focusMode || (focusMode && !task.isComplete){
+                            NavigationLink(destination: DetailsView(task: theTask), label:{ TaskRow(task: task)
+                            })
+                        }
+                    }).onDelete(perform: { indexSet in
+                        nightWatchTasks.weeklyTasks.remove(atOffsets: indexSet)
+                    }).onMove(perform: { indices, newOffset in
+                        nightWatchTasks.weeklyTasks.move(fromOffsets: indices, toOffset: newOffset)
+                    })
                 }
-                //MARK: Monthly tasks
-                Group {
-                    Divider()
-                    HStack {
-                        Image(systemName: "calendar")
-                            .foregroundColor(Color.yellow)
-                            .font(/*@START_MENU_TOKEN@*/.title3/*@END_MENU_TOKEN@*/)
-                            .fontWeight(/*@START_MENU_TOKEN@*/.heavy/*@END_MENU_TOKEN@*/)
-                        Text("Monthly Tasks").font(/*@START_MENU_TOKEN@*/.title3/*@END_MENU_TOKEN@*/).fontWeight(.heavy).foregroundColor(/*@START_MENU_TOKEN@*/.yellow/*@END_MENU_TOKEN@*/).underline().padding(.top).textCase(/*@START_MENU_TOKEN@*/.uppercase/*@END_MENU_TOKEN@*/)
-                    }
-                    Text("- Test security alarm")
-                    Text("- Test motion detectors")
-                    Text("- Test smoke alarms")
+                
+                Section(header: TaskSectionHeader(symbolSystemName: "calendar", headerText: "Monthly tasks")){
+                    let taskIndexPairs = Array(zip(nightWatchTasks.monthlyTasks, nightWatchTasks.monthlyTasks.indices))
+                    ForEach(taskIndexPairs, id:\.0.id, content: {
+                        task, taskIndex in
+                        
+                        let tasksWrapper = $nightWatchTasks
+                        let tasksBinding = tasksWrapper.monthlyTasks
+                        let theTask = tasksBinding[taskIndex]
+                         
+                        if !focusMode || (focusMode && !task.isComplete){
+                            NavigationLink(destination: DetailsView(task: theTask), label:{ TaskRow(task: task)
+                            })
+                        }
+                    }).onDelete(perform: { indexSet in
+                        nightWatchTasks.monthlyTasks.remove(atOffsets: indexSet)
+                    }).onMove(perform: { indices, newOffset in
+                        nightWatchTasks.monthlyTasks.move(fromOffsets: indices, toOffset: newOffset)
+                    })
                 }
             }
-            .foregroundColor(/*@START_MENU_TOKEN@*/.gray/*@END_MENU_TOKEN@*/)
-            Spacer()
-        }
-        .padding([.top, .leading])
-        Spacer()
+            .listStyle(GroupedListStyle())
+            .navigationTitle("Home")
+            .toolbar{
+                ToolbarItem(placement: .topBarLeading){
+                    EditButton()
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Reset"){
+                        resetAlertShowing = true
+                    }
+                }
+                ToolbarItem(placement: .bottomBar){
+                    Toggle(isOn: $focusMode, label: {
+                        Text("Focus Mode")
+                    })
+                    .toggleStyle(.switch)
+                }
+                
+            }
+        }.alert(isPresented: $resetAlertShowing, content: {
+            Alert(title: Text("Reset list"), message: Text("Are you sure?"), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes, reset it"), action: {
+                let newNightWatchTasks = NightWatchTasks()
+                
+                // Not bothering with persistency atm
+                self.nightWatchTasks.nightlyTasks = newNightWatchTasks.nightlyTasks
+                self.nightWatchTasks.weeklyTasks = newNightWatchTasks.weeklyTasks
+                self.nightWatchTasks.monthlyTasks = newNightWatchTasks.monthlyTasks
+            }))
+        })
     }
 }
 
-#Preview {
-    ContentView()
+struct TaskSectionHeader: View {
+    
+    let symbolSystemName: String
+    let headerText: String
+    
+    var body: some View {
+        HStack{
+            Image(systemName: symbolSystemName)
+            Text(headerText)
+        }.font(.title3)
+    }
 }
+
+struct TaskRow: View {
+    let task: Task
+    var body: some View {
+        VStack{
+            if task.isComplete {
+                HStack{
+                    Image(systemName: "checkmark.square")
+                    Text(task.name)
+                        .foregroundStyle(.gray)
+                        .strikethrough()
+                }
+            } else {
+                HStack{
+                    Image(systemName: "square")
+                    Text(task.name)
+                }
+            }
+        }
+    }
+}
+
+//#Preview {
+//    var nightWatchTasks = NightWatchTasks()
+//    ContentView(nightWatchTasks: nightWatchTasks)
+//}
