@@ -91,10 +91,16 @@ struct ContentView: View {
                     }
                 }
                 ToolbarItem(placement: .bottomBar){
-                    Toggle(isOn: $focusMode, label: {
-                        Text("Focus Mode")
-                    })
-                    .toggleStyle(.switch)
+                    HStack {
+                            Spacer()
+                            Toggle(isOn: $focusMode) {
+                                Text("Focus Mode")
+                            }
+                            .toggleStyle(.switch)
+                            .frame(width: 180, alignment: .center) // Adjust the width as needed
+                            
+                            Spacer()
+                        }
                 }
                 
             }
