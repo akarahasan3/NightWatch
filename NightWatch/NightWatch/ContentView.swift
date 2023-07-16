@@ -125,7 +125,7 @@ struct TaskSectionHeader: View {
     var body: some View {
         HStack{
             Image(systemName: symbolSystemName)
-            Text(headerText)
+            Text(headerText).foregroundColor(.accentColor)
         }.font(.title3)
     }
 }
